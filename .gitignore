@@ -1,0 +1,5 @@
+*.native
+*~
+\#*
+input/
+_build/

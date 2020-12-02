@@ -1,0 +1,4 @@
+%:
+	corebuild $@.native
+
+
