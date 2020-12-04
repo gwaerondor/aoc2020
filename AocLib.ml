@@ -1,5 +1,8 @@
 open Core
 
+let contents_of_file_map ~f filename =
+  In_channel.read_all filename |> f
+
 let lines_of_file_map ~f filename =
   In_channel.read_lines filename |> List.map ~f:f
 
@@ -17,6 +20,8 @@ let print_strings =
 let print_two_part_solution p1 p2 =
   print_strings ["Part 1: "; p1; "\n";
                  "Part 2: "; p2; "\n"]
+
+let list_length_str ls = List.length ls |> Int.to_string
 
 let halt error_message =
   Out_channel.output_string stderr error_message;

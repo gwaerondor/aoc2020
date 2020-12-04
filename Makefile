@@ -1,4 +1,4 @@
 %:
-	corebuild $@.native
+	corebuild -pkg re2 $@.native
 
 
