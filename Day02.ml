@@ -30,5 +30,4 @@ let solve ~f =
   List.filter ~f:f input |> List.length |> Int.to_string
 
 let main =
-  AocLib.print_strings ["Part 1: "; (solve ~f:is_valid); "\n";
-                        "Part 2: "; (solve ~f:is_valid2); "\n"]
+  AocLib.print_two_part_solution (solve ~f:is_valid) (solve ~f:is_valid2)
