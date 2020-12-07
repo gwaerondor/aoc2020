@@ -47,14 +47,25 @@ let is_valid pp =
     | Info None -> true
     | Info (Some _) -> false
   in
-  List.filter ~f:missing_value [pp.byr;
-                                pp.iyr;
-                                pp.eyr;
-                                pp.hgt;
-                                pp.hcl;
-                                pp.ecl;
-                                pp.pid]
+  List.filter ~f:missing_value [pp.byr; pp.iyr; pp.eyr; pp.hgt;
+                                pp.hcl; pp.ecl; pp.pid]
   |> List.is_empty
+
+let is_valid2 pp =
+  let m ~regex v =
+    let re = (Re2.create_exn regex) in
+    match v with
+    | Info (Some x) -> Re2.matches re x
+    | Info None -> false
+  in
+  is_valid pp
+  && m ~regex: "^(19[2-9][0-9]|200[0-2])$" pp.byr
+  && m ~regex: "^20(1[0-9]|20)$" pp.iyr
+  && m ~regex: "^20(2[0-9]|30)$" pp.eyr
+  && m ~regex: "^((1[5-8][0-9]|19[0-3])cm)|((59|6[0-9]|7[0-6])in)$" pp.hgt
+  && m ~regex: "^#[0-9a-f]{6}$" pp.hcl
+  && m ~regex: "^(amb|blu|brn|gry|grn|hzl|oth)$" pp.ecl
+  && m ~regex: "^[0-9]{9}$" pp.pid
 
 let print_passport pp =
   let ts = function | Info (Some x) -> x | _ -> "-" in
@@ -65,4 +76,5 @@ let print_passport pp =
 
 let main =
   let solution_1 = List.filter ~f:is_valid input |> AocLib.list_length_str in
-  AocLib.print_two_part_solution solution_1 "?"
+  let solution_2 = List.filter ~f:is_valid2 input |> AocLib.list_length_str in
+  AocLib.print_two_part_solution solution_1 solution_2
