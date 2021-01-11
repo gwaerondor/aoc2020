@@ -14,12 +14,13 @@ let csv_of_file filename =
   | Some x -> String.split_on_chars ~on:[','] x
   | None -> []
 
-let print_strings =
-  List.map ~f:(Out_channel.output_string stdout)
+let print_strings ?separator:(sep="") strings =
+  List.intersperse ~sep:sep strings
+  |> List.map ~f:(Out_channel.output_string stdout)
 
 let print_two_part_solution p1 p2 =
-  print_strings ["Part 1: "; p1; "\n";
-                 "Part 2: "; p2; "\n"]
+  print_strings ~separator:"" ["Part 1: "; p1; "\n";
+                               "Part 2: "; p2; "\n"]
 
 let list_length_str ls = List.length ls |> Int.to_string
 
