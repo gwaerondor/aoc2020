@@ -3,15 +3,19 @@ open Core
 let contents_of_file_map ~f filename =
   In_channel.read_all filename |> f
 
+let lines_of_file = In_channel.read_lines
+
 let lines_of_file_map ~f filename =
-  In_channel.read_lines filename |> List.map ~f:f
+  lines_of_file filename |> List.map ~f:f
 
 let lines_of_file_int = lines_of_file_map ~f:int_of_string
+
+let csv_of_line = String.split_on_chars ~on:[',']
 
 let csv_of_file filename =
   let lines = In_channel.read_lines filename in
   match List.hd lines with
-  | Some x -> String.split_on_chars ~on:[','] x
+  | Some x -> csv_of_line x
   | None -> []
 
 let print_strings ?separator:(sep="") strings =
